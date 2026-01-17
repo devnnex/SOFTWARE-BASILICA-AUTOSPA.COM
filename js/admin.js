@@ -108,93 +108,119 @@ function renderActivos() {
   }
 }
 
-/* ----------IMPRIMIR RECIBO ---------- */
+/* ---------- IMPRIMIR RECIBO A4 ---------- */
 function imprimirRecibo(servicio) {
-  const win = window.open("", "PRINT", "width=320,height=650");
+  const win = window.open("", "PRINT", "width=1600,height=1800");
 
   win.document.write(`
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Recibo</title>
+<title>RECIBO</title>
 
 <style>
+  @page {
+    size: A4;
+    margin: 6mm;
+  }
+
   @media print {
     * {
       box-sizing: border-box;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     body {
-      width: 80mm;
       margin: 0;
-      padding: 6px;
+      padding: 0;
       font-family: "Courier New", monospace;
-      font-size: 12px;
+      font-size: 30px; /* +2px */
+      font-weight: 800;
       color: #000;
       background: #fff;
+    }
+
+    .recibo {
+      width: 100%;
+      height: 100%;
+      padding: 6mm;
     }
 
     .center {
       text-align: center;
     }
 
+    /* LOGO */
     .logo {
-      max-width: 120px;
-      margin: 0 auto 6px;
+      max-width: 320px;
+      margin: 0 auto 16px;
       display: block;
     }
 
+    /* TITULOS */
     .title {
-      font-size: 14px;
-      font-weight: bold;
-      letter-spacing: 1px;
-      margin-bottom: 2px;
-    }
-
-    .subtitle {
-      font-size: 10px;
-      opacity: 0.8;
+      font-size: 52px; /* +2px */
+      font-weight: 900;
       margin-bottom: 6px;
     }
 
-    .line {
-      border-top: 1px dashed #000;
-      margin: 6px 0;
+    .subtitle {
+      font-size: 30px; /* +2px */
+      font-weight: 800;
+      margin-bottom: 22px;
     }
 
+    /* LINEA */
+    .line {
+      border-top: 4px dashed #000;
+      margin: 22px 0;
+    }
+
+    /* FILAS */
     .row {
       display: flex;
       justify-content: space-between;
-      margin: 2px 0;
+      align-items: center;
+      margin: 14px 0;
+      font-size: 32px; /* +2px */
+      font-weight: 900;
     }
 
     .label {
-      font-weight: bold;
+      font-weight: 900;
     }
 
     .value {
       text-align: right;
+      font-weight: 900;
     }
 
+    /* TOTAL (NO SE TOCA) */
     .total-box {
-      border: 1px dashed #000;
-      padding: 6px;
-      margin-top: 6px;
+      border: 4px dashed #000;
+      padding: 24px;
+      margin-top: 26px;
+    }
+
+    .total-box .label {
+      font-size: 30px; /* IGUAL */
     }
 
     .total {
-      font-size: 16px;
-      font-weight: bold;
+      font-size: 64px; /* IGUAL */
+      font-weight: 900;
       text-align: center;
-      margin-top: 4px;
+      margin-top: 10px;
     }
 
+    /* FOOTER */
     .footer {
-      font-size: 10px;
+      font-size: 26px; /* +2px */
+      font-weight: 800;
       text-align: center;
-      opacity: 0.75;
-      margin-top: 8px;
+      margin-top: 26px;
     }
   }
 </style>
@@ -202,39 +228,40 @@ function imprimirRecibo(servicio) {
 
 <body>
 
-  <!-- LOGO -->
+<div class="recibo">
+
   <div class="center">
-    <img src="images/logo.png" class="logo" alt="Logo">
+    <img src="images/logo.png" class="logo" alt="LOGO">
     <div class="title">LAVADERO</div>
-    <div class="subtitle">Recibo de servicio</div>
+    <div class="subtitle">RECIBO DE SERVICIO</div>
   </div>
 
   <div class="line"></div>
 
-  <!-- DETALLE -->
   <div class="row">
-    <div class="label">Placa:</div>
+    <div class="label">PLACA</div>
     <div class="value">${servicio.placa}</div>
   </div>
 
   <div class="row">
-    <div class="label">Servicio:</div>
+    <div class="label">SERVICIO</div>
     <div class="value">${servicio.servicio}</div>
   </div>
 
   <div class="row">
-    <div class="label">Trabajador:</div>
+    <div class="label">TRABAJADOR</div>
     <div class="value">${servicio.trabajador}</div>
   </div>
 
   <div class="row">
-    <div class="label">Fecha:</div>
-    <div class="value">${new Date(servicio.hora).toLocaleString("es-CO")}</div>
+    <div class="label">FECHA</div>
+    <div class="value">
+      ${new Date(servicio.hora).toLocaleString("es-CO")}
+    </div>
   </div>
 
   <div class="line"></div>
 
-  <!-- TOTAL -->
   <div class="total-box">
     <div class="center label">TOTAL A PAGAR</div>
     <div class="total">
@@ -242,20 +269,19 @@ function imprimirRecibo(servicio) {
     </div>
   </div>
 
-  <div class="line"></div>
-
-  <!-- FOOTER -->
   <div class="footer">
-    ¡Gracias por su visita!<br>
-    Conserve este recibo
+    ¡GRACIAS POR SU VISITA!<br>
+    CONSERVE ESTE RECIBO
   </div>
 
-  <script>
-    window.onload = function () {
-      window.print();
-      window.onafterprint = () => window.close();
-    };
-  </script>
+</div>
+
+<script>
+  window.onload = function () {
+    window.print();
+    window.onafterprint = () => window.close();
+  };
+</script>
 
 </body>
 </html>
@@ -263,6 +289,12 @@ function imprimirRecibo(servicio) {
 
   win.document.close();
 }
+
+
+
+
+
+
 
 
 
